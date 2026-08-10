@@ -6,9 +6,9 @@ model = YOLO("runs/train/tiger_watch_yolo/weights/best.pt")
 # dynamic=False is critical because TensorRT likes fixed image shapes for optimization
 model.export(format='onnx', imgsz=640, dynamic=False)
  
-
-execution:
 ```
+execution:
+
 **/home/shon/PycharmProjects/tiger_watch/.venv/bin/python /home/shon/PycharmProjects/tiger_watch/export_YOLO_to_ONNX.py 
 Ultralytics 8.4.82 🚀 Python-3.12.3 torch-2.12.1+cu130 CPU (AMD Ryzen 7 8700F 8-Core Processor)
 YOLO26n summary (fused): 122 layers, 2,376,006 parameters, 0 gradients, 5.2 GFLOPs
