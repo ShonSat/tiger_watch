@@ -45,6 +45,6 @@ Dataset_prep.md
 Train_model.md
 
 ### Export YOLO custom model to ONNX format for deployment on Jetson
-Convert_yolo_to_ONNX.md
+Export_YOLO_to_ONNX.md
 
 
