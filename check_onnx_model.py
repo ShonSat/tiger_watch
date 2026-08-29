@@ -5,7 +5,7 @@
 import sys
 import onnx
 #filename = yourONNXmodel
-filename = "runs/train/tiger_watch_yolo/weights/best_negative_axis.onnx"
+filename = "runs/train/tiger_watch_yolo/weights/best.onnx"
 model = onnx.load(filename)
 onnx.checker.check_model(model)
 
