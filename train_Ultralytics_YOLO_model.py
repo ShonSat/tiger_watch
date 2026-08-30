@@ -22,8 +22,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--model",
- #       default="yolo26n.pt",
-        default="yolov9s.pt",
+        default="yolo26n.pt",
+ #       default="yolov9s.pt",
         help="Base model checkpoint or YAML architecture to train from.",
     )
     parser.add_argument(
@@ -56,7 +56,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--name",
-        default="tiger_watch_yolo_v9s",
+        default="tiger_watch_yolo",
         help="Run name under the project directory.",
     )
     parser.add_argument(
