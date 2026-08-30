@@ -43,18 +43,27 @@ sudo pip3 install -U jetson-stats
 sudo reboot
 ```
 
-
-5. RealSense SDK install and D435 camera sanity with steps in RealSense_Jetson.md
+6. External USB storage (EXT4 format) configuration (to store data, git repos):
+    
+    - Plugin USB stick/storage and identify UUID of the device X: sudo blkid | grep sdaX 
+`nvidia@ubuntu:/mnt/usb$ sudo blkid | grep sda1
+/dev/sda1: UUID="5e00f4cb-362a-4590-86ef-feaf3f3930cf" TYPE="ext4" PARTUUID="1132ab11-01"
+`
+    - ctreate directory to mount USB device: mkdir -p /mnt/usb
+    - append line to /etc/fstab: "UUID="5e00f4cb-362a-4590-86ef-feaf3f3930cf" /mnt/usb ext4 defaults,nofail 0 2 
+    - reboot jetson.
+    - 
+7. RealSense SDK install and D435 camera sanity with steps in RealSense_Jetson.md
     - Precompiled SDK librealsense2-utils and librealsense2-dev are installed.
     - Git repo cloned on your device ~/librealsense/  
     - Optional: Building from Source with V4L Native backend by applying the kernel patching
 
-5. Clone tiger_watch repo
+8. Clone tiger_watch repo
 ```
 git clone git@github.com:ShonCamarlinghi/tiger_watch.git 
 ```
 
-6. Install Ultralytics software: 
+9. Install Ultralytics software: 
 - A) docker image from https://github.com/ultralytics/ultralytics#docker
 ```
 
