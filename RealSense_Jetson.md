@@ -27,6 +27,7 @@ cd librealsense/
     Build librealsense2 SDK.
     The CMAKE -DBUILD_WITH_CUDA=true flag assumes CUDA modules are installed. 
 ```
+sudo apt-get install libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev
 sudo apt-get install git libssl-dev libusb-1.0-0-dev libudev-dev pkg-config libgtk-3-dev -y
 ./scripts/setup_udev_rules.sh  
 mkdir build && cd build  
