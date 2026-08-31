@@ -7,7 +7,7 @@ from onnxsim import simplify
 
 # Load the model
 model_path='/home/shon/PycharmProjects/tiger_watch/runs/train/tiger_watch_yolo/weights/'
-model_name='best_end2endOn_simplifyTrue_nmsOn_max_det100.onnx'
+model_name='best_end2endOn_simplifyOff_nmsOn_max_det100.onnx'
 model = onnx.load( model_path + model_name)
 
 # Simplify
