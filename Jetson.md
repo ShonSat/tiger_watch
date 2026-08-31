@@ -44,21 +44,37 @@ sudo reboot
 ```
 
 6. External USB storage (EXT4 format) configuration (to store data, git repos):
-    
-    - Plugin USB stick/storage and identify UUID of the device X: sudo blkid | grep sdaX 
-`nvidia@ubuntu:/mnt/usb$ sudo blkid | grep sda1
-/dev/sda1: UUID="5e00f4cb-362a-4590-86ef-feaf3f3930cf" TYPE="ext4" PARTUUID="1132ab11-01"
-`
-    - ctreate directory to mount USB device: mkdir -p /mnt/usb
-    - append line to /etc/fstab: "UUID="5e00f4cb-362a-4590-86ef-feaf3f3930cf" /mnt/usb ext4 defaults,nofail 0 2 
-    - reboot jetson.
-    - 
-7. RealSense SDK install and D435 camera sanity with steps in RealSense_Jetson.md
+```
+lsblk                             # identify drive, i.e. /dev/sda
+sudo umount /dev/sdX*
+sudo fdisk /dev/sdX               # wipe and create single partition
+# in fdisk prompt select options:
+# g - creates new clean GPT partition table (wipes out old partition)
+# n - creates new partition
+# 1 - sets it as partition number 1.
+# accept all default start and end sectors
+# w - write the changes to the disk and exit 
+
+sudo mkfs.ext4 -F /dev/sdX         # format new partition to EXT4 (linux) format
+
+             
+mkdir -p /mnt/usb                  # create directory to mount USB device X
+sudo mount /dev/sdX /mnt/usb       # mount the drive
+sudo chown -R $USER:USER /mnt/usb  # change ownership to current jetson user
+
+sudo blkid | grep sdX              # identify UUID of the device X:  
+# example:  /dev/sda1: UUID="5e00f4cb-362a-4590-86ef-feaf3f3930cf" TYPE="ext4" PARTUUID="1132ab11-01"
+# append line to /etc/fstab: UUID="5e00f4cb-362a-4590-86ef-feaf3f3930cf" /mnt/usb ext4 defaults,nofail  0 2 
+
+sudo umount /mnt/usb 
+```     
+ 
+6. RealSense SDK install and D435 camera sanity with steps in RealSense_Jetson.md
     - Precompiled SDK librealsense2-utils and librealsense2-dev are installed.
     - Git repo cloned on your device ~/librealsense/  
     - Optional: Building from Source with V4L Native backend by applying the kernel patching
 
-8. Clone tiger_watch repo
+7. Clone tiger_watch repo
 ```
 git clone git@github.com:ShonCamarlinghi/tiger_watch.git 
 ```
