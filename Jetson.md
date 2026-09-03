@@ -67,7 +67,7 @@ sudo blkid | grep sdX              # identify UUID of the device X:
 # example:  /dev/sda1: UUID="5e00f4cb-362a-4590-86ef-feaf3f3930cf" TYPE="ext4" PARTUUID="1132ab11-01"
 # append line to /etc/fstab: UUID="5e00f4cb-362a-4590-86ef-feaf3f3930cf" /mnt/usb ext4 defaults,nofail  0 2 
 
-sudo umount /mnt/usb 
+sudo mount -a                      # mount all filesystems mentioned in fstab
 ```     
  
 6. RealSense SDK install and D435 camera sanity with steps in RealSense_Jetson.md
