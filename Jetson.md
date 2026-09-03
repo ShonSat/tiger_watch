@@ -77,7 +77,7 @@ sudo mount -a                      # mount all filesystems mentioned in fstab
 
 7. Clone tiger_watch repo
 ```
-git clone git@github.com:ShonCamarlinghi/tiger_watch.git 
+git clone git@github.com:ShonSat/tiger_watch.git 
 ```
 
 9. Install Ultralytics software: 
