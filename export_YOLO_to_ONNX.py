@@ -6,7 +6,11 @@ docs.ultralytics.com/integrations/tensorrt
 https://docs:ultralytics.com/modes/export
 
 I'm tweaking parameters for export to ONNX format to address https://github.com/ShonSat/tiger_watch/issues/6
-simplify=False  # Ultralytics uses a graph simplifier (onnxslim or onnx-simplifier) by default to merge layers.
+Minimum arguments needed to export pytorch model to onnx that is acceptable for TensorRT 8.5.2 on Jetson:
+model.export(format='onnx', imgsz=640, dynamic=False, verbose=True, opset=12)
+
+Parameters:     Descriptions:
+simplify=False # Ultralytics uses a graph simplifier (onnxslim or onnx-simplifier) by default to merge layers.
                   Sometimes this process collapses explicit axis mappings into negative values.
 dynamic=False  # is critical to set dynamic=False, because TensorRT likes fixed image shapes for optimization
 opset=12       # TensorRT 8.5.2 on Jetson supports onnx opset 17 or less.
@@ -22,6 +26,7 @@ iou=0.45,      # IOU threshold for NMS
 # load best custom-trained weights from the run directory
 model = YOLO("runs/train/tiger_watch_yolo/weights/best.pt")
 # model = YOLO("runs/detect/train/tiger_watch_yolo_v9s/weights/best.pt")
+# model.export(format='onnx', imgsz=640, dynamic=False, verbose=True, opset=12)
 
 # Set the model to end-to-end mode BEFORE exporting
 model.model.end2end = True
