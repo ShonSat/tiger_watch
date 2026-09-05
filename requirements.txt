@@ -7,3 +7,5 @@ onnxruntime
 onnxslim>=0.1.82
 
 onnxsim
+
+tensorrt
