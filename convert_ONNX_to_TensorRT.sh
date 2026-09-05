@@ -3,6 +3,8 @@ set -euo  # exit if CMD fails with non-zero
 
 onnx2engine() {
   local ONNX_name="$1"
+  echo "========================================================================"
+  echo ""
   echo "Now processing: $(basename "$1")"
   # Extract the base name to dynamically name the output engine
   ENGINE_name="${ONNX_name%.*}.engine"   # swap out the last extension after .
@@ -48,7 +50,7 @@ elif [ -d "$user_arg" ]; then
     echo "Target directory: $user_arg."
     echo "Scanning for .onnx files"
     ls -lah "$user_arg"/*.onnx
-    for file in "$user_arg"*.onnx; do
+    for file in "$user_arg"/*.onnx; do
         onnx2engine "$file"   # process *.onnx files in a loop
     done
 else
