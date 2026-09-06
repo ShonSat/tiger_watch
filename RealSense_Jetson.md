@@ -12,6 +12,7 @@ Note: at least 2.5GB of free space needed.
 sudo apt-get install librealsense2-utils
 sudo apt-get install librealsense2-dev
 ```
+
     - B)  compile SDK from source using Native Backend with GPU enabled
      
     Use the V4L Native backend by applying the kernel patching.
