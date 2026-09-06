@@ -19,14 +19,16 @@ dpkg -l | grep nvinfer
 # Check that the trtexec utility is present in the standard system path
 ls -la /usr/src/tensorrt/samples/trtexec
 
-# Append alias in ~/.bashrc  to to run trtexec from any terminal location on jetson
+# Append alias in ~/.bashrc  to to run trtexec and cuda from any terminal location on jetson
+echo "export PATH=/usr/local/cuda/bin:$PATH" >> ~/.bashrc
+echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH" >> ~/.bashrc
 echo "alias trtexec=/usr/src/tensorrt/bin/trtexec" >> ~/.bashrc
 
 # Verify the alias is added and nvcc paths are present:
 cat ~/.bashrc
 ...
-export PATH=/usr/local/cuda-11.4/bin:$PATH
-export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64:$LD_LIBRARY_PATH
+export PATH=/usr/local/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH 
 alias trtexec=/usr/src/tensorrt/bin/trtexec
 ```
 
@@ -43,7 +45,7 @@ sudo pip3 install -U jetson-stats
 sudo reboot
 ```
 
-6. External USB storage (EXT4 format) configuration (to store data, git repos):
+6. External USB storage (EXT4 format) configuration (to store data, logs, git repos, python edge_env):
 ```
 lsblk                             # identify drive, i.e. /dev/sda
 sudo umount /dev/sdX*
@@ -56,8 +58,7 @@ sudo fdisk /dev/sdX               # wipe and create single partition
 # w - write the changes to the disk and exit 
 
 sudo mkfs.ext4 -F /dev/sdX         # format new partition to EXT4 (linux) format
-
-             
+           
 mkdir -p /mnt/usb                  # create directory to mount USB device X
 sudo mount /dev/sdX /mnt/usb       # mount the drive, if mount fails due to missing/corrupt blocks, try fixing:  sudo e2fsck -y /dev/sdX
 # sudo mount -t ext4  /dev/sdX /mnt/usb
@@ -71,9 +72,8 @@ sudo mount -a                      # mount all filesystems mentioned in fstab
 ```     
  
 6. RealSense SDK install and D435 camera sanity with steps in RealSense_Jetson.md
-    - Precompiled SDK librealsense2-utils and librealsense2-dev are installed.
-    - Git repo cloned on your device ~/librealsense/  
-    - Optional: Building from Source with V4L Native backend by applying the kernel patching
+    A) Precompiled SDK librealsense2-utils and librealsense2-dev are installed.
+    B) Building from Source with V4L Native backend by applying the kernel patching (needed for running inference on GPU).
 
 7. Clone tiger_watch repo
 ```
