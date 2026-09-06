@@ -22,7 +22,8 @@ sudo apt-get install librealsense2-dev
         - Try to insert the modules into the kernel.
         
 ```
-git clone https://github.com/IntelRealSense/librealsense.git
+ 
+git clone https://github.com/realsenseai/librealsense.git
 cd librealsense/
 ./scripts/patch-realsense-ubuntu-L4T.sh    # let it run 30min
 ```
