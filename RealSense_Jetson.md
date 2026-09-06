@@ -20,6 +20,7 @@ sudo apt-get install librealsense2-dev
         - Fetch the kernel source trees required to build the kernel and its modules.
         - Apply Librealsense-specific kernel patches and build the modified kernel modules.
         - Try to insert the modules into the kernel.
+        
 ```
 git clone https://github.com/IntelRealSense/librealsense.git
 cd librealsense/
