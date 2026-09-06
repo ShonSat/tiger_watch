@@ -72,10 +72,10 @@ sudo mount -a                      # mount all filesystems mentioned in fstab
 ```     
  
 6. RealSense SDK install and D435 camera sanity with steps in RealSense_Jetson.md
-    A) Precompiled SDK librealsense2-utils and librealsense2-dev are installed.
-    B) Building from Source with V4L Native backend by applying the kernel patching (needed for running inference on GPU).
+- A) Precompiled SDK librealsense2-utils and librealsense2-dev are installed.
+- B) Building from Source with V4L Native backend by applying the kernel patching (needed for running inference on GPU).
 
-7. Clone tiger_watch repo
+8. Clone tiger_watch repo
 ```
 git clone git@github.com:ShonSat/tiger_watch.git 
 ```
