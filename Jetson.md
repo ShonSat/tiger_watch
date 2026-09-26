@@ -62,7 +62,7 @@ sudo mkfs.ext4 -F /dev/sdX         # format new partition to EXT4 (linux) format
 mkdir -p /mnt/usb                  # create directory to mount USB device X
 sudo mount /dev/sdX /mnt/usb       # mount the drive, if mount fails due to missing/corrupt blocks, try fixing:  sudo e2fsck -y /dev/sdX
 # sudo mount -t ext4  /dev/sdX /mnt/usb
-sudo chown -R $USER:USER /mnt/usb  # change ownership to current jetson user
+sudo chown -R $USER:$USER /mnt/usb  # change ownership to current jetson user
 
 sudo blkid | grep sdX              # identify UUID of the device X:  
 # example:  /dev/sda1: UUID="5e00f4cb-362a-4590-86ef-feaf3f3930cf" TYPE="ext4" PARTUUID="1132ab11-01"
