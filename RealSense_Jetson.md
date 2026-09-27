@@ -7,43 +7,109 @@ Note: at least 2.5GB of free space needed.
 1. Register the server's public key: [https://github.com/realsenseai/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages] 
 
 2. install SDK:
-    - A)  pre-compiled SDK
+- A)  pre-compiled SDK
 ```
 sudo apt-get install librealsense2-utils
 sudo apt-get install librealsense2-dev
 ```
 
-
-    - B)  compile SDK from source using Native Backend with GPU enabled
-     
-    Use the V4L Native backend by applying the kernel patching.
-        - Fetch the kernel source trees required to build the kernel and its modules.
-        - Apply Librealsense-specific kernel patches and build the modified kernel modules.
-        - Try to insert the modules into the kernel.
+  - B) for multi-camera feed: use the V4L Native Backend by applying the kernel patching.
+        - Fetch the kernel source trees required to build the kernel and its modules (at least 4GB space needed)
+        - Apply librealsense-specific kernel patches and build the modified kernel modules.
+         This modifies the Linux native kernel drivers (Video4Linux / V4L2) directly.
         
-```
- 
+        
+``` 
 git clone https://github.com/realsenseai/librealsense.git
 cd librealsense/
+
 ./scripts/patch-realsense-ubuntu-L4T.sh    # let it run 30min
 ```
 
-    Build librealsense2 SDK.
-    The CMAKE -DBUILD_WITH_CUDA=true flag assumes CUDA modules are installed. 
-```
-sudo apt-get install libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev
-sudo apt-get install git libssl-dev libusb-1.0-0-dev libudev-dev pkg-config libgtk-3-dev -y
-./scripts/setup_udev_rules.sh  
+Build librealsense2 SDK.
+CUDA compilation Flags: -DBUILD_WITH_CUDA=true in the cmake block. 
+Omitting this causes the depth alignment layer calculations to fall back to the CPU, severely throttling your frame rate.
+
+```sudo apt-get update
+sudo apt-get install -y libssl-dev libusb-1.0-0-dev pkg-config libgtk-3-dev libglfw3-dev libglu1-mesa-dev libudev-dev
+export PATH=/usr/local/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+ 
+./scripts/setup_udev_rules.sh
+
 mkdir build && cd build  
 cmake .. -DBUILD_EXAMPLES=true -DCMAKE_BUILD_TYPE=release -DFORCE_RSUSB_BACKEND=false -DBUILD_WITH_CUDA=true && make -j$(($(nproc)-1)) && sudo make install
 ```
-CUDA Compilation Flags: -DBUILD_WITH_CUDA=true in the cmake block. 
-Omitting this causes the depth alignment layer calculations to fall back to the CPU, severely throttling your frame rate.
 
+
+ - C) for single-camera feed: use RSUSB backend.
+        - Bypasses the kernel entirely and handles UVC data protocols in user-space using libusb
+```
+sudo apt-get update && sudo apt-get install -y \
+    libssl-dev \
+    libusb-1.0-0-dev \
+    pkg-config \
+    libgtk-3-dev \
+    libglfw3-dev \
+    libglu1-mesa-dev \
+    freeglut3-dev \
+    libudev-dev
+
+export PATH=/usr/local/cuda-11.4/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64:$LD_LIBRARY_PATH
+
+git clone https://github.com/realsenseai/librealsense.git
+cd librealsense/
+mkdir build && cd build
+
+cmake .. -DFORCE_RSUSB_BACKEND=ON \
+         -DBUILD_WITH_CUDA=ON \
+         -DBUILD_EXAMPLES=ON \
+         -DCMAKE_BUILD_TYPE=Release
+
+ 
+make -j$(nproc)
+
+
+sudo make install 
+sudo ldconfig
+```
+
+- D) Rebuild source for single-camera feed and realsense2 python wrapper.
+```
+sudo apt-get install -y python3-dev python3-pip
+sudo apt-get update && sudo apt-get install -y \
+    libssl-dev \
+    libusb-1.0-0-dev \
+    pkg-config \
+    libgtk-3-dev \
+    libglfw3-dev \
+    libglu1-mesa-dev \
+    freeglut3-dev \
+    libudev-dev
+
+export PATH=/usr/local/cuda-11.4/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64:$LD_LIBRARY_PATH
+
+git clone https://github.com/realsenseai/librealsense.git
+cd ~/librealsense
+rm -rf build && mkdir build && cd build
+
+cmake .. -DFORCE_RSUSB_BACKEND=ON \
+         -DBUILD_WITH_CUDA=ON \
+         -DBUILD_EXAMPLES=ON \
+         -DBUILD_PYTHON_BINDINGS:bool=true \
+         -DPYTHON_EXECUTABLE=/usr/bin/python3 \
+         -DCMAKE_BUILD_TYPE=Release
+
+make -j$(nproc)
+sudo make install
+sudo ldconfig
+```
+# 
 3. Sanity check SDK with sample realsense app
 ```
-# git clone https://github.com/IntelRealSense/librealsense.git
-cd librealsense/example/sample
+cd examples/  
 g++ -std=c++11 filename.cpp -lrealsense2
 ./a.out
 ```
@@ -58,7 +124,8 @@ Bus 001 Device 002: ID 1a40:0101 Terminus Technology Inc. Hub
 Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 ```
 
-5. Start realsense-viewer app:
+5. Start realsense-viewer app from any directory, remember after tools rebuild we set them up system wide (sudo make install && 
+sudo ldconfig):
 ```
 cd ~/librealsense/tools
 realsense-viewer
