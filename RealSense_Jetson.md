@@ -74,7 +74,8 @@ make -j$(nproc)
 sudo make install 
 sudo ldconfig
 ```
-
+At the end of source compilation and tools rebuild, we set them up system-wide (sudo make install && sudo ldconfig), so realsense apps can be called from any directory.
+ 
 - D) Rebuild source for single-camera feed and realsense2 python wrapper.
 ```
 sudo apt-get install -y python3-dev python3-pip
@@ -124,10 +125,8 @@ Bus 001 Device 002: ID 1a40:0101 Terminus Technology Inc. Hub
 Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 ```
 
-5. Start realsense-viewer app from any directory, remember after tools rebuild we set them up system wide (sudo make install && 
-sudo ldconfig):
+5. Start realsense-viewer app from any directory:
 ```
-cd ~/librealsense/tools
 realsense-viewer
 ```
 https://github.com/ShonCamarlinghi/tiger_watch/issues/1#issue-4864595931  
