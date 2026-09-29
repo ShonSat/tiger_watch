@@ -2,38 +2,57 @@ import tensorrt as trt
 import pycuda.driver as cuda
 import pycuda.autoinit
 from charset_normalizer import detect
-from ultralytics import YOLO
+#from ultralytics import YOLO
 import sys
 
 # Script takes 1 parameter: full path to TRT model
-model_engine = sys.argv[1]
+if len(sys.argv) < 2:
+    print("Error: missing model path argument")
+    sys.exit()
+my_engine = sys.argv[1]
 #################### TensorRT: engine inspection #########################
 
 
 # Load the TensorRT engine
-logger = trt.Logger(trt.Logger.INFO)
-#with open("best.engine", "rb") as f:
-with open(model_engine, "rb") as f:
-    engine_data = f.read()
+def inspect_engine(engine_path):
+    logger = trt.Logger(trt.Logger.INFO)
+    
+    #with open("best.engine", "rb") as f:
+    with open(engine_path, "rb") as f:
+        engine_data = f.read()
 
-runtime = trt.Runtime(logger)
-engine = runtime.deserialize_cuda_engine(engine_data)
-print("TensorRT engine loaded successfully!")
-print(f"  - Number of bindings: {engine.num_bindings}")
-for i in range(engine.num_bindings):
-    name = engine.get_binding_name(i)
-    shape = engine.get_binding_shape(i)
-    dtype = engine.get_binding_dtype(i)
-    print(f"  - Binding {i}: {name} shape={shape} dtype={dtype}")
+    runtime = trt.Runtime(logger)
+    engine = runtime.deserialize_cuda_engine(engine_data)
+
+    print("TensorRT engine loaded successfully!")
+    print(f"Number of bindings: {engine.num_bindings}")
+
+    for i in range(engine.num_bindings):
+        name = engine.get_tensor_name(i)
+        shape = engine.get_tensor_shape(name)
+        dtype = engine.get_tensor_dtype(name)
+        mode = engine.get_tensor_mode(name)
+        
+        print(f"Tensor {i} ({mode}): Name='{name}' shape={shape} dtype={dtype}")
+    
+    # delete TRT objects tp free GPU before function exit.
+    del engine
+    del runtime
+
+if __name__ == "__main__":
+    inspect_engine(my_engine)
+    print("Ciao!!!")
 
 
+'''
 ########################### Ultralytics: engine inspection ###############################
 # Load the exported TensorRT model
-#model = YOLO("runs/train/tiger_watch_yolo/weights/best_dynamicOff_end2endOff_opset_9.engine")
+model = YOLO("runs/train/tiger_watch_yolo/weights/best_dynamicOff_end2endOff_opset_9.engine")
+
 model = YOLO(model_engine)
 # Run inference
 results = model("/home/shon/Sandbox/datasets/YOLO_wildlife/images/val/493977943d101f25.jpg")
 # Validate accuracy on the COCO8 dataset
-# metrics = model.val(data="coco8.yaml")
+metrics = model.val(data="coco8.yaml")
 metrics =  model.val('/home/shon/Sandbox/datasets/YOLO_wildlife/dataset.yaml')
-
+'''
