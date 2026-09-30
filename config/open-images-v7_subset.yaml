@@ -1,0 +1,93 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
+# Open Images v7 dataset https://storage.googleapis.com/openimages/web/index.html by Google
+# Documentation: https://docs.ultralytics.com/datasets/detect/open-images-v7
+# Example usage: yolo train data=open-images-v7.yaml
+# parent
+# ├── ultralytics
+# └── datasets
+#     └── open-images-v7 ← downloads here (561 GB)
+
+# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
+path: /home/shon/Sandbox/datasets/open-images-v7-animals # dataset root dir
+train: images/train # train images (relative to 'path') 1743042 images
+val: images/val # val images (relative to 'path') 41620 images
+test: # test images (optional)
+
+# Classes
+names:
+  0: Animal
+  1: Bird
+  2: Deer
+  3: Dog
+  4: Cat
+  5: Eagle
+  6: Falcon
+  7: Fish
+  8: Fox
+  9: Girl
+  10: Goat
+  11: Goldfish
+  12: Goose
+  13: Hamster
+  14: Horse
+  15: Lion
+  16: Mammal
+  17: Man
+  18: Mouse
+  19: Owl
+  20: Parrot
+  21: Person
+  22: Rabbit
+  23: Raccoon
+  24: Reptile
+  25: Sheep
+  26: Snake
+  27: Sparrow
+  28: Swan
+  29: Tiger
+  30: Woman
+
+# Download script/URL (optional) ---------------------------------------------------------------------------------------
+download: |
+  import warnings
+
+  from ultralytics.utils import LOGGER, SETTINGS, Path
+  from ultralytics.utils.checks import check_requirements
+
+  check_requirements("fiftyone")
+
+  import fiftyone as fo
+  import fiftyone.zoo as foz
+
+  name = "open-images-v7"
+  fo.config.dataset_zoo_dir = Path(SETTINGS["datasets_dir"]) / "fiftyone" / name
+  fraction = 1.0  # fraction of full dataset to use
+  LOGGER.warning("Open Images V7 dataset requires at least **561 GB of free space. Starting download...")
+  for split in "train", "validation":  # 1743042 train, 41620 val images
+      train = split == "train"
+
+      # Load Open Images dataset
+      dataset = foz.load_zoo_dataset(
+          name,
+          split=split,
+          label_types=["detections"],
+          max_samples=round((1743042 if train else 41620) * fraction),
+      )
+
+      # Define classes
+      if train:
+          classes = dataset.default_classes  # all classes
+          # classes = dataset.distinct('ground_truth.detections.label')  # only observed classes
+
+      # Export to YOLO format
+      with warnings.catch_warnings():
+          warnings.filterwarnings("ignore", category=UserWarning, module="fiftyone.utils.yolo")
+          dataset.export(
+              export_dir=str(Path(SETTINGS["datasets_dir"]) / name),
+              dataset_type=fo.types.YOLOv5Dataset,
+              label_field="ground_truth",
+              split="val" if split == "validation" else split,
+              classes=classes,
+              overwrite=train,
+          )
