@@ -17,13 +17,30 @@ my_engine = sys.argv[1]
 def inspect_engine(engine_path):
     logger = trt.Logger(trt.Logger.INFO)
     
-    #with open("best.engine", "rb") as f:
+    #read engine binary data stream into engine_data object
     with open(engine_path, "rb") as f:
         engine_data = f.read()
 
+    '''
+    create empty trt.Runtime object that has: 
+        - a pointer to trt.Logger
+        - inits default memory allocator to comm to CUDA driver to claim and release VRAM blocks on jetson;
+        - GPU context init by pyCuda: it IDs Compute Capability to handle to .engine file
+        - Deserialization engine blueprint: core internal logic and C++ backend functions to read and decode heavily optimized TenorRT structural format. 
+    '''
     runtime = trt.Runtime(logger)
+
+
+    '''
+    Deserialize .engine byte stream into ICudaEngine object:
+        - Parse bytestream and decodes structural map of the network architecture.
+        - Load weights into VRAM: allocates memory blocks and populates with model weights and biases.
+        - Recontructs CUDA kernels: prepares CUDA kernels preselected during compilation, so they are armed and ready to execute.
+        - Returns ICudaEngine Engine object that holds engines structural metadata (tensor names, shapes, dtypes) and a template for execution context for running inference. Note: ICudaEngine can not run data by itself (it's stateless) to perform inference. It needs IExecutionContext object as active workspace. 
+    '''
     engine = runtime.deserialize_cuda_engine(engine_data)
 
+    
     print("TensorRT engine loaded successfully!")
     print(f"Number of bindings: {engine.num_bindings}")
 
