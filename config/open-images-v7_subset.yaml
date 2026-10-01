@@ -15,6 +15,9 @@ val: images/val # val images (relative to 'path') 41620 images
 test: # test images (optional)
 
 # Classes
+# These classes are a subset of the Open Images v7 dataset, focusing on animals and related categories. The dataset includes images of various animals, birds, 
+#and other creatures, as well as humans in some cases. The classes are defined by their corresponding integer labels, which are used for training and evaluation in object detection tasks.
+nc: 31 # number of classes
 names:
   0: Animal
   1: Bird

@@ -81,6 +81,7 @@ git clone git@github.com:ShonSat/tiger_watch.git
 ```
 
 9. Install Ultralytics software: 
+Note: takes 4GB space 
 - A) docker image from https://github.com/ultralytics/ultralytics#docker
 ```
 

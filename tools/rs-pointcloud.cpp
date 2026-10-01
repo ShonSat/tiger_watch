@@ -1,5 +1,8 @@
 // License: Apache 2.0. See LICENSE file in root directory.
 // Copyright(c) 2015-2017 RealSense, Inc. All Rights Reserved.
+// this example illustrates how to calculate and render a pointcloud from a RealSense camera
+// The pointcloud is generated from the depth image, and colorized by the RGB image (or infrared if no RGB sensor is available) 
+// The pointcloud is rendered using OpenGL, and the user can manipulate the view using mouse and keyboard inputs.
 
 #include <librealsense2/rs.hpp> // Include RealSense Cross Platform API
 #include "example.hpp"          // Include short list of convenience functions for rendering
