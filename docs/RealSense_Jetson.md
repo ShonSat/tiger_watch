@@ -9,8 +9,25 @@ Note: at least 2.5GB of free space needed.
 2. install SDK:
 - A)  pre-compiled SDK
 ```
+sudo mkdir -p /etc/apt/keyrings
+
+curl -sSf https://librealsense.realsenseai.com/Debian/librealsenseai.asc | \
+gpg --dearmor | sudo tee /etc/apt/keyrings/librealsenseai.gpg > /dev/null
+
+sudo apt-get install apt-transport-https
+
+echo "deb [signed-by=/etc/apt/keyrings/librealsenseai.gpg] https://librealsense.realsenseai.com/Debian/apt-repo $(lsb_release -cs) main" | \
+sudo tee /etc/apt/sources.list.d/librealsense.list
+
+sudo apt update
+
+sudo apt-get install librealsense2-dkms
 sudo apt-get install librealsense2-utils
-sudo apt-get install librealsense2-dev
+sudo apt-get install librealsense2-dev 
+sudo apt-get install librealsense2-dbg
+
+pkg-config --modversion realsense2
+rs-enumerate-devices
 ```
 
   - B) for multi-camera feed: use the V4L Native Backend by applying the kernel patching.
@@ -129,5 +146,5 @@ Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 ```
 realsense-viewer
 ```
-https://github.com/ShonCamarlinghi/tiger_watch/issues/1#issue-4864595931  
+https://github.com/ShonSat/tiger_watch/issues/1#issue-4864595931  
 
