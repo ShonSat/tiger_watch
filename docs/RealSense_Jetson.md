@@ -95,7 +95,7 @@ At the end of source compilation and tools rebuild, we set them up system-wide (
  
 - D) Rebuild source for single-camera feed and realsense2 python wrapper.
 ```
-sudo apt-get install -y python3-dev python3-pip
+sudo apt-get install -y python3-dev python3-pip python3-setuptools
 sudo apt-get update && sudo apt-get install -y \
     libssl-dev \
     libusb-1.0-0-dev \
@@ -105,6 +105,9 @@ sudo apt-get update && sudo apt-get install -y \
     libglu1-mesa-dev \
     freeglut3-dev \
     libudev-dev
+
+nvcc --version
+ls /usr/local/cuda*
 
 export PATH=/usr/local/cuda-11.4/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64:$LD_LIBRARY_PATH
@@ -116,7 +119,8 @@ rm -rf build && mkdir build && cd build
 cmake .. -DFORCE_RSUSB_BACKEND=ON \
          -DBUILD_WITH_CUDA=ON \
          -DBUILD_EXAMPLES=ON \
-         -DBUILD_PYTHON_BINDINGS:bool=true \
+         -DBUILD_OPENCV_EXAMPLES=ON \
+         -DBUILD_PYTHON_BINDINGS:bool=ON \
          -DPYTHON_EXECUTABLE=/usr/bin/python3 \
          -DCMAKE_BUILD_TYPE=Release
 
@@ -128,7 +132,7 @@ sudo ldconfig
 3. Sanity check SDK with sample realsense app
 ```
 cd examples/  
-g++ -std=c++11 filename.cpp -lrealsense2
+g++ -std=c++17 filename.cpp -lrealsense2
 ./a.out
 ```
 4. Connect Intel RealSense Deapth camera (D435) to USB-C port on Jetson and check usb devices:

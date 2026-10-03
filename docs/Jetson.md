@@ -1,5 +1,6 @@
 Jetson SDK: JetPack 5.1.6 | [https://developer.nvidia.com/embedded/jetpack-sdk-516] | 
 | only available for host Ubuntu version 20.04 or less
+Jetson Xavier AGX HW specs: https://docs.nvidia.com/jetson/archives/r35.1/DeveloperGuide/text/HR/JetsonModuleAdaptationAndBringUp/JetsonAgxXavierSeries.html 
 
 1. Use SDK-manager on Host machine to flash Jetson device with JetPack 5.1.6 username: nvidia, password: nvidia
 2. On device boot, add line in (sudo visudo) : 
@@ -71,23 +72,22 @@ sudo blkid | grep sdX              # identify UUID of the device X:
 sudo mount -a                      # mount all filesystems mentioned in fstab
 ```     
  
-6. RealSense SDK install and D435 camera sanity with steps in RealSense_Jetson.md
+6. RealSense_Jetson.md:  RealSense SDK install and D435 camera sanity with steps in  
 - A) Precompiled SDK librealsense2-utils and librealsense2-dev are installed.
-- B) Building from Source with V4L Native backend by applying the kernel patching (needed for running inference on GPU).
+- B) Building from Source  (needed for running inference on GPU, using opencv2, etc. ).
 
 8. Clone tiger_watch repo
 ```
 git clone git@github.com:ShonSat/tiger_watch.git 
 ```
 
-9. Install Ultralytics software: 
-Note: takes 4GB space 
-- A) docker image from https://github.com/ultralytics/ultralytics#docker
-```
+9. Install Ultralytics software last. Or if you want to go without Ultralitics bloatware, skip to step 10.
 
-```
-- B) manually by hand or use script. 
+- A) Jetson_Docker.md: docker image from https://github.com/ultralytics/ultralytics#docker
+
+- B) manually by hand or use script. Note: takes 4GB space 
 ```
 ~/tiger_watch/jetson_YOLO_setup.sh
 ```
-    
+
+10.   

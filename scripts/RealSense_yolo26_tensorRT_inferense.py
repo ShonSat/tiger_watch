@@ -7,8 +7,7 @@ import pycuda.autoinit  # Automatically manages the CUDA context
 
 
 TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
-# Define your custom dataset label names here
-#CLASS_NAMES = ["class_0", "class_1", "class_2"]  # Update with your custom classes
+
 CLASS_NAMES = ["Dog", "Cat", "Tiger", "Bird", "Snake", "Bear"]
 CONF_THRESHOLD = 0.25  # Confidence cutoff filter  , for step 3.  Initialize TensorRT assets
 

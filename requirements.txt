@@ -8,4 +8,6 @@ onnxslim>=0.1.82
 
 onnxsim
 
-tensorrt
+tensorrt<=8.5.2sudo tar -xpf Tegra_Linux_Sample-Root-Filesystem_R35.6.4_aarch64.tbz2 \
+  -C Jetson_Linux_R35.6.4_aarch64/Linux_for_Tegra/rootfs
+pycuda<=2024.1

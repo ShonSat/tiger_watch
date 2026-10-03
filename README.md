@@ -36,10 +36,14 @@ Dataset management: Voxel51 | [https://docs.voxel51.com/index.html#]
 Benchmark reference: 
 [https://github.com/NVIDIA-AI-IOT/jetson_benchmarks/tree/master] | [https://github.com/mlcommons/inference_results_v3.1/tree/main/closed/NVIDIA]
 
+Detailed instructions in tiger_watch/docs:
+
 - Setup SW on host PC with RTX GPU | Host.md
 
 - Provision Jetson | Jetson.md 
 
+- RealSense SDK compilation on Jetson | RealSense_Jetson.md
+ 
 - Provision Jetson with ultralytics pre-configured image | Jetson_Docker.md 
   Using docker also requires external SSD storage and docker configurations for it.  
 

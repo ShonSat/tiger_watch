@@ -92,5 +92,3 @@ if(CUDAToolkit_FOUND AND TENSORRT_LIBRARY AND TENSORRT_INCLUDE_DIR)
     )
 endif()
 
-# Add your own camera apps like this:
-# add_realsense_example(my_custom_app src/my_custom_app.cpp)
