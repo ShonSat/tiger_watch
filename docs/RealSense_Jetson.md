@@ -1,4 +1,4 @@
-Jetson AGX Xavier + JetPack 5.1.6 | [https://developer.nvidia.com/embedded/jetpack-sdk-516] | 
+Jetson AGX Xavier + JetPack 5.1.7 | [https://developer.nvidia.com/embedded/jetpack-sdk-517] | 
 | only available for host Ubuntu version 20.04 or less
 
 Realsense SDK setup ref:  https://github.com/realsenseai/librealsense/blob/master/doc/installation_jetson.md
