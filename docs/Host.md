@@ -1,4 +1,4 @@
-#### Host system SW Environment setup for model training
+#### Host system SW Environment setup for Yolo model training
 OS: Ubuntu 24.04 
 
 venv setup in terminal
@@ -15,7 +15,7 @@ Besides other packages needed for the project, requirement.txt contains ultralyt
 "pip install ultralytics" gets you the following:
 - ultralytics python package (up to version 12 currently supported)
 - Yolo command-line tool
-- a pinned PyTorch matching your platform
+- PyTorch 
 
 To access environment with ultralytics and torch:
 ```bash
@@ -71,7 +71,7 @@ https://developer.nvidia.com/embedded/jetson-linux-r3565
 https://docs.nvidia.com/jetson/archives/r35.6.5/DeveloperGuide/AT/JetsonLinuxToolchain.html 
 https://catalog.ngc.nvidia.com/orgs/nvidia/-/containers/l4t-base/-
 
-If your dev host Ubuntu version non 20.04, you need to run docker instance with 20.04 and pull the NVIDIA Jetson 5.1.7 rootfs and dev environment to match the target system (Jetson AGX Xavier, Ubuntu 20.04, CUDA 11.4, TensorRT 8.5.2, etc.), along with the ARM aarch64 cross-compile tools.
+If your dev host Ubuntu version non 20.04, you need to run docker instance with 20.04 and mount from your host the NVIDIA Jetson 5.1.7 rootfs and dev environment to match the target system (Jetson AGX Xavier, Ubuntu 20.04, CUDA 11.4, TensorRT 8.5.2, etc.), along with the ARM aarch64 cross-compile tools.
 
 On the host system, download the Jetson Linux R35.6.5 Driver Package (BSP) from NVIDIA, then extract it under ~/Sandbox. That creates ~/Sandbox/Linux_for_Tegra with contents such as tools/samplefs.
 Download the matching R35.6.5 Sample Root Filesystem and extract it into ~/Sandbox/Linux_for_Tegra/rootfs, then follow NVIDIA’s rootfs instructions to apply the BSP binaries.
@@ -88,19 +88,19 @@ ls ~/Sandbox/Linux_for_Tegra/tools/samplefs/nv_build_samplefs.sh
 
 ```
 
-Download the Bootlin GCC 9.3 binary toolchain from [NVIDIA's Bootlin toolchain page](https://developer.nvidia.com/embedded/jetson-linux/bootlin-toolchain-gcc-93). The page downloads the `aarch64--glibc--stable-final.tar.gz` archive. The separate Bootlin toolchain sources archive is not needed to cross-compile applications.
+Download the Bootlin GCC 9.3 binary toolchain from [NVIDIA's Bootlin toolchain page](https://developer.nvidia.com/embedded/jetson-linux/bootlin-toolchain-gcc-93). The binary archive is gzip-compressed; this copy is saved as `~/Sandbox/3D_cpp/aarch64--glibc--stable-final.tar`. The separate Bootlin toolchain sources archive is not needed to cross-compile applications.
 
-Extract the downloaded archive into the project-local toolchain directory:
+Extract the downloaded archive into `/opt/bootlin/aarch64--glibc--stable-final`. The `-z` option is required because the `.tar` file is gzip-compressed.
 ```bash
-cd ~/Sandbox/3D_cpp/tiger_watch
-mkdir -p .toolchains/bootlin
-tar -xzf ~/Downloads/aarch64--glibc--stable-final.tar.gz \
-  -C .toolchains/bootlin
+export PROJECT_ROOT="$HOME/Sandbox/3D_cpp/tiger_watch"
+export BOOTLIN_TOOLCHAIN_ROOT="/opt/bootlin/aarch64--glibc--stable-final"
+sudo mkdir -p "$BOOTLIN_TOOLCHAIN_ROOT"
+sudo tar -xzf "$HOME/Sandbox/3D_cpp/aarch64--glibc--stable-final.tar" \
+  -C "$BOOTLIN_TOOLCHAIN_ROOT" --no-same-owner
 
-find "$PWD/.toolchains/bootlin" -type f \
-  \( -name '*gcc' -o -name '*g++' \) -print
+find "$BOOTLIN_TOOLCHAIN_ROOT/bin" -name '*gcc' -o -name '*g++'
 ```
-The binaries should be `aarch64-buildroot-linux-gnu-gcc` and `aarch64-buildroot-linux-gnu-g++` under `.toolchains/bootlin/bin`. Keep the extracted toolchain out of version control. The Bootlin compiler provides the host-side cross-compiler; the target sysroot must separately provide ARM64 headers and libraries.
+The binaries should be `aarch64-buildroot-linux-gnu-gcc` and `aarch64-buildroot-linux-gnu-g++` under `/opt/bootlin/aarch64--glibc--stable-final/bin`. Because the extracted toolchain is outside the repository, it is not included in version control. The Bootlin compiler provides the host-side cross-compiler; the target sysroot must separately provide ARM64 headers and libraries.
 
 Afterward, Docker’s existing mount, -v "$HOME/Sandbox/Linux_for_Tegra:/l4t", will expose those files under /l4t.
 -v "$HOME/Sandbox/Linux_for_Tegra:/l4t"
@@ -205,7 +205,7 @@ sudo sed -i -E \
 Set the host build environment. The toolchain file also sets the target pkg-config paths and the Ubuntu ARM64 multiarch include/linker paths when CMake loads it.
 ```bash
 export PROJECT_ROOT="$HOME/Sandbox/3D_cpp/tiger_watch"
-export BOOTLIN_TOOLCHAIN_ROOT="$PROJECT_ROOT/.toolchains/bootlin"
+export BOOTLIN_TOOLCHAIN_ROOT="/opt/bootlin/aarch64--glibc--stable-final"
 export PATH="$BOOTLIN_TOOLCHAIN_ROOT/bin:$PATH"
 export CC="$BOOTLIN_TOOLCHAIN_ROOT/bin/aarch64-buildroot-linux-gnu-gcc"
 export CXX="$BOOTLIN_TOOLCHAIN_ROOT/bin/aarch64-buildroot-linux-gnu-g++"

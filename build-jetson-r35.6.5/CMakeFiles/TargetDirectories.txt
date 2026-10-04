@@ -1,0 +1,4 @@
+/home/shon/Sandbox/3D_cpp/tiger_watch/build-jetson-r35.6.5/CMakeFiles/rs_pointcloud.dir
+/home/shon/Sandbox/3D_cpp/tiger_watch/build-jetson-r35.6.5/CMakeFiles/rs_object_detection.dir
+/home/shon/Sandbox/3D_cpp/tiger_watch/build-jetson-r35.6.5/CMakeFiles/edit_cache.dir
+/home/shon/Sandbox/3D_cpp/tiger_watch/build-jetson-r35.6.5/CMakeFiles/rebuild_cache.dir

@@ -199,4 +199,4 @@ git clone git@github.com:ShonSat/tiger_watch.git
 ~/tiger_watch/jetson_YOLO_setup.sh
 ```
 
-10.   
+10.    

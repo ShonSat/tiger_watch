@@ -13,7 +13,10 @@ On the Jetson, convert the ONNX file to an FP16 engine with the repository scrip
 ```bash
 cd ~/tiger_watch
 ONNX_MODEL='models/best.onnx'
-bash scripts/convert_ONNX_to_TensorRT.sh "$ONNX_MODEL"
+ONNX_MODEL_DIR='models/'
+bash scripts/convert_ONNX_to_TensorRT.sh "$ONNX_MODEL"   
+bash scripts/convert_ONNX_to_TensorRT.sh "$ONNX_MODEL_DIR"   
+
 
 ENGINE_MODEL="${ONNX_MODEL%.*}.engine"
 /usr/src/tensorrt/bin/trtexec --loadEngine="$ENGINE_MODEL" --verbose
@@ -32,5 +35,7 @@ python3 scripts/test_trt_engine.py "$ENGINE_MODEL"
 
 The Python environment must be able to import TensorRT and PyCUDA. A successful run prints `TensorRT engine loaded successfully!` followed by the engine's binding details. This checks that the engine can be deserialized and inspected; use the `trtexec --loadEngine` command above to also execute it with TensorRT-generated input data.
 
-TensorRT engine plans are hardware- and software-stack-specific. Keep the ONNX model as the portable source artifact and regenerate the engine on the target Jetson when changing the GPU, TensorRT/CUDA version, precision, or build options. Do not assume an engine produced on an x86 host or a different Jetson is compatible.
+TensorRT engine plans are hardware- and software-stack-specific. Keep the ONNX model as the portable source artifact and regenerate the engine on the target Jetson when changing the GPU, TensorRT/CUDA version, precision, or build options. Do not assume an engine produced on an x86 host or a different Jetson is compatible. See bugs: https://github.com/ShonSat/tiger_watch/issues/3  and  https://github.com/ShonSat/tiger_watch/issues/6 
+
+
 

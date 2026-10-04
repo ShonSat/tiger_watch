@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/shon/Sandbox/3D_cpp/tiger_watch/build-jetson-r35.6.5",
+  "command": "/opt/bootlin/aarch64--glibc--stable-final/bin/aarch64-buildroot-linux-gnu-g++ --sysroot=/home/shon/Sandbox/Linux_for_Tegra/rootfs  -I/home/shon/Sandbox/3D_cpp/tiger_watch/include -I/home/shon/Sandbox/3D_cpp/tiger_watch/include/tiger_watch -I/home/shon/Sandbox/3D_cpp/tiger_watch/include/librealsense2 -I/home/shon/Sandbox/3D_cpp/tiger_watch/include/librealsense2-gl -I/home/shon/Sandbox/3D_cpp/tiger_watch/third-party -isystem /home/shon/Sandbox/Linux_for_Tegra/rootfs/usr/include/aarch64-linux-gnu -B/home/shon/Sandbox/Linux_for_Tegra/rootfs/usr/lib/aarch64-linux-gnu/ -std=gnu++17 -o CMakeFiles/rs_pointcloud.dir/src/rs-pointcloud.cpp.o -c /home/shon/Sandbox/3D_cpp/tiger_watch/src/rs-pointcloud.cpp",
+  "file": "/home/shon/Sandbox/3D_cpp/tiger_watch/src/rs-pointcloud.cpp",
+  "output": "CMakeFiles/rs_pointcloud.dir/src/rs-pointcloud.cpp.o"
+},
+{
+  "directory": "/home/shon/Sandbox/3D_cpp/tiger_watch/build-jetson-r35.6.5",
+  "command": "/opt/bootlin/aarch64--glibc--stable-final/bin/aarch64-buildroot-linux-gnu-g++ --sysroot=/home/shon/Sandbox/Linux_for_Tegra/rootfs  -I/home/shon/Sandbox/3D_cpp/tiger_watch/include -I/home/shon/Sandbox/3D_cpp/tiger_watch/include/tiger_watch -I/home/shon/Sandbox/3D_cpp/tiger_watch/include/librealsense2 -I/home/shon/Sandbox/3D_cpp/tiger_watch/include/librealsense2-gl -I/home/shon/Sandbox/3D_cpp/tiger_watch/third-party -isystem /home/shon/Sandbox/Linux_for_Tegra/rootfs/usr/include/aarch64-linux-gnu -B/home/shon/Sandbox/Linux_for_Tegra/rootfs/usr/lib/aarch64-linux-gnu/ -std=gnu++17 -o CMakeFiles/rs_object_detection.dir/src/rs-object-detection.cpp.o -c /home/shon/Sandbox/3D_cpp/tiger_watch/src/rs-object-detection.cpp",
+  "file": "/home/shon/Sandbox/3D_cpp/tiger_watch/src/rs-object-detection.cpp",
+  "output": "CMakeFiles/rs_object_detection.dir/src/rs-object-detection.cpp.o"
+}
+]
