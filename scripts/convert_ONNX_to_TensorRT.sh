@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo  # exit if CMD fails with non-zero
+set -euo pipefail
 
 onnx2engine() {
   local ONNX_name="$1"
@@ -20,10 +20,21 @@ onnx2engine() {
 }
 
 
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <path_to_onnx_file_or_directory>"
+    exit 1
+fi
+
+user_arg="$1"
+if [ ! -f "$user_arg" ] && [ ! -d "$user_arg" ]; then
+    echo "Error: $user_arg is not a valid file or directory." >&2
+    exit 1
+fi
+
 LOG_DIR="./logs"
-if [ -f "$1" ]; then
-  LOG_FILE="$LOG_DIR/$(basename "$0")_$(basename "$1").log"
-else [ -d "$1" ];
+if [ -f "$user_arg" ]; then
+  LOG_FILE="$LOG_DIR/$(basename "$0")_$(basename "$user_arg").log"
+elif [ -d "$user_arg" ]; then
   LOG_FILE="$LOG_DIR/$(basename "$0")_ONNX_batch_directory_$((10000 + RANDOM % 90000)).log"
 fi
 
@@ -33,14 +44,6 @@ fi
 exec > >(tee -a "$LOG_FILE") 2>&1
 echo "Saving execution for $0 in $LOG_FILE"
 
-# Check if the onnx argument is missing
-if [ -z "$1" ]; then
-    echo "Error: No ONNX models provided."
-    echo "Usage: $0 <path_to_onnx_file_or_directory>"
-    exit 1
-fi
-
-user_arg="$1"
 # single onnx file
 if [ -f "$user_arg" ]; then
     echo "Target file: $user_arg"

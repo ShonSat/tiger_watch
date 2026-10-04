@@ -26,7 +26,7 @@ Hardware | deployment: NVIDIA Jetson AGX Xavier 16, Intel RealSense Depth Camera
 <img width="50%" src="msc/realsense_viewer_sanity_check.jpg"/>
 </div>
                   
-Jetson SDK: JetPack 5.1.6 | [https://developer.nvidia.com/embedded/jetpack-sdk-516] | only available for host Ubuntu version 20.04 or less (I installed 20.04 alongside my 24.04)
+Jetson SDK: JetPack 5.1.7 (L4T 35.6.5) | [https://developer.nvidia.com/embedded/jetpack-sdk-517] | only available for host Ubuntu version 20.04 or less (I installed 20.04 alongside my 24.04)
 
 RealSense SDK: [https://github.com/realsenseai/librealsense/blob/master/doc/installation_jetson.md]
 
@@ -38,7 +38,7 @@ Benchmark reference:
 
 Detailed instructions in tiger_watch/docs:
 
-- Setup SW on host PC with RTX GPU | Host.md
+- RTX-equipped host for model training and cross-compiling applications for the Jetson AGX Xavier (ARM64) | Host.md
 
 - Provision Jetson | Jetson.md 
 
@@ -53,4 +53,6 @@ Detailed instructions in tiger_watch/docs:
 
 - Export YOLO custom model to ONNX format for deployment on Jetson | Export_YOLO_to_ONNX.md
 
+- Convert ONNX to TensorRT Engine on Jetson | Jetson_onnx2engine.md 
 
+ 
